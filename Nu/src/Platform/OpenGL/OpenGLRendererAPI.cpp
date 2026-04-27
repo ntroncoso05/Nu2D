@@ -4,12 +4,40 @@
 #include <glad/glad.h>
 
 namespace Nu {
+	
+	void OpenGLMessageCallback(
+		unsigned source,
+		unsigned type,
+		unsigned id,
+		unsigned severity,
+		int length,
+		const char* message,
+		const void* userParam)
+	{
+		switch (severity)
+		{
+			case GL_DEBUG_SEVERITY_HIGH:         NU_CORE_CRITICAL(message); return;
+			case GL_DEBUG_SEVERITY_MEDIUM:       NU_CORE_ERROR(message); return;
+			case GL_DEBUG_SEVERITY_LOW:          NU_CORE_WARN(message); return;
+			case GL_DEBUG_SEVERITY_NOTIFICATION: NU_CORE_TRACE(message); return;
+		}
+		
+		NU_CORE_ASSERT(false, "Unknown severity level!");
+	}
 
 	void OpenGLRendererAPI::Init()
 	{
 		NU_PROFILE_FUNCTION();
 
 		// Transparency
+	#ifdef NU_DEBUG
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+		
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+	#endif
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -34,7 +62,7 @@ namespace Nu {
 
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
-		uint32_t count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0); // TODO: ?
 	}

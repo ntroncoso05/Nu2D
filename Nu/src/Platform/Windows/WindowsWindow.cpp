@@ -62,7 +62,7 @@ namespace Nu {
 			++s_GLFWWindowCount;
 		}
 
-		m_Context = new OpenGLContext(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -196,4 +196,5 @@ namespace Nu {
 	{
 		return m_Data.VSync;
 	}
+	
 }

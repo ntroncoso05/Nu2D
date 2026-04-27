@@ -8,6 +8,7 @@
 
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
+#include "Nu/Renderer/Texture.h"
 
 namespace Nu {
 
@@ -18,7 +19,7 @@ namespace Nu {
 		TagComponent() = default;
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag)
-			:Tag(tag) {}
+			: Tag(tag) {}
 	};
 
 	struct TransformComponent
@@ -30,7 +31,7 @@ namespace Nu {
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const glm::vec3& translation)
-			:Translation(translation) { }
+			: Translation(translation) {}
 
 		glm::mat4 GetTransform() const
 		{
@@ -45,11 +46,13 @@ namespace Nu {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
-			:Color(color) {}
+			: Color(color) {}
 	};
 
 	struct CameraComponent
@@ -66,7 +69,7 @@ namespace Nu {
 	{
 		ScriptableEntity* Instance = nullptr;
 
-		ScriptableEntity* (*InstantiateScript)();
+		ScriptableEntity*(*InstantiateScript)();
 		void (*DestroyScript)(NativeScriptComponent*);
 
 		template<typename T>

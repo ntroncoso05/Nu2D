@@ -11,19 +11,17 @@
 
 namespace Nu {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const std::string& name)
+	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
+		: m_CommandLineArgs(args)
 	{
 		NU_PROFILE_FUNCTION();
 
 		NU_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
-
 		m_Window = Window::Create(WindowProps(name)); // explicit constructor need std::unique_ptr<Window>()
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback(NU_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -36,7 +34,7 @@ namespace Nu {
 		NU_PROFILE_FUNCTION();
 
 		// TODO: Check
-		//Renderer::Shutdown();
+		Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -65,8 +63,8 @@ namespace Nu {
 		NU_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(NU_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(NU_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
@@ -76,7 +74,7 @@ namespace Nu {
 		}
 	}
 
-	void Application::run()
+	void Application::Run()
 	{
 		NU_PROFILE_FUNCTION();
 
@@ -132,4 +130,5 @@ namespace Nu {
 
 		return false;
 	}
+
 }

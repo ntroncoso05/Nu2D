@@ -68,7 +68,7 @@ namespace Nu {
 
 			if (m_OutputStream.is_open())
 			{
-				m_CurrentSession = new InstrumentationSession({ name });
+				m_CurrentSession = new InstrumentationSession({name});
 				WriteHeader();
 			}
 			else

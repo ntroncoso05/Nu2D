@@ -91,7 +91,7 @@ namespace Nu {
 	}
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
-		:m_Specification(spec)
+		: m_Specification(spec)
 	{
 		for (auto spec : m_Specification.Attachments.Attachments)
 		{
@@ -193,7 +193,7 @@ namespace Nu {
 	{
 		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
-			NU_CORE_WARN("Attempted to resize frambuffer to {0}, {1}", width, height);
+			NU_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
 			return;
 		}
 		m_Specification.Width = width;
@@ -210,6 +210,7 @@ namespace Nu {
 		int pixelData;
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
+
 	}
 
 	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)

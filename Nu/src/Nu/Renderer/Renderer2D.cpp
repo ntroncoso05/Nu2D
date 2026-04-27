@@ -3,9 +3,11 @@
 
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Nu/Renderer/UniformBuffer.h"
 #include "RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Nu {
 
@@ -38,11 +40,18 @@ namespace Nu {
 		QuadVertex* QuadVertexBufferPtr = nullptr;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
-		uint32_t TextureSlotIndex = 1; // 0 = White Texture
+		uint32_t TextureSlotIndex = 1; // 0 = white texture
 
 		glm::vec4 QuadVertexPositions[4];
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 	static Renderer2DData s_Data;
@@ -95,8 +104,6 @@ namespace Nu {
 			samplers[i] = i;
 
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 		// Set first texture slot to 0 (default)
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -105,6 +112,8 @@ namespace Nu {
 		s_Data.QuadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -118,8 +127,8 @@ namespace Nu {
 	{
 		NU_PROFILE_FUNCTION();
 
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix()); // Uniform
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData)); // Uniform
 
 		StartBatch();
 	}
@@ -128,10 +137,8 @@ namespace Nu {
 	{
 		NU_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj); // Uniform
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -140,10 +147,8 @@ namespace Nu {
 	{
 		NU_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetViewProjection();
-
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -168,13 +173,14 @@ namespace Nu {
 		if (s_Data.QuadIndexCount == 0)
 			return; // Nothing to draw
 
-		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase; // the subtraction tells the number of elements because these are quad vertices so need to cast these two to something that is one byte large to get the size in terms of bytes
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase); // the subtraction tells the number of elements because these are quad vertices so need to cast these two to something that is one byte large to get the size in terms of bytes
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 		// Bind textures
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 			s_Data.TextureSlots[i]->Bind(i);
-
+		
+		s_Data.TextureShader->Bind();
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
 	}
@@ -254,7 +260,7 @@ namespace Nu {
 			NextBatch();
 
 		float textureIndex = 0.0f;
-		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i] == *texture)
 			{
@@ -265,7 +271,7 @@ namespace Nu {
 
 		if (textureIndex == 0.0f)
 		{
-			if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
 				NextBatch();
 
 			textureIndex = (float)s_Data.TextureSlotIndex;
@@ -323,7 +329,10 @@ namespace Nu {
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
-		DrawQuad(transform, src.Color, entityID);
+		if (src.Texture)
+			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::ResetStats()

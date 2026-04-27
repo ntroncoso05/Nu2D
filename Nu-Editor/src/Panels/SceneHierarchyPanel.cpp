@@ -17,6 +17,8 @@
 
 namespace Nu {
 
+	extern const std::filesystem::path g_AssetPath;
+
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
 	{
 		SetContext(context);
@@ -32,7 +34,7 @@ namespace Nu {
 	{
 		ImGui::Begin("Scene Hierarchy");
 
-		m_Context->m_Registry.view<entt::entity>().each([&](auto entityID)
+		m_Context->m_Registry.view<entt::entity>().each([&](auto entityID)//.each?
 		{
 			Entity entity{ entityID, m_Context.get() };
 			DrawEntityNode(entity);
@@ -42,7 +44,7 @@ namespace Nu {
 			m_SelectionContext = {};
 
 		// Right-click on blank space
-		if (ImGui::BeginPopupContextWindow(0, ImGuiMouseButton_Right | ImGuiPopupFlags_NoOpenOverItems))
+		if (ImGui::BeginPopupContextWindow(0, 1/*, false*/))
 		{
 			if (ImGui::MenuItem("Create Empty Entity"))
 				m_Context->CreateEntity("Empty Entity");
@@ -72,7 +74,7 @@ namespace Nu {
 
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity,flags, tag.c_str());
+		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectionContext = entity;
@@ -183,7 +185,8 @@ namespace Nu {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-			ImGui::PopStyleVar();
+			ImGui::PopStyleVar(				
+			);
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
 			{
@@ -270,6 +273,7 @@ namespace Nu {
 			auto& camera = component.Camera;
 
 			ImGui::Checkbox("Primary", &component.Primary);
+
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 			const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.GetProjectionType()];
 			if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
@@ -282,6 +286,7 @@ namespace Nu {
 						currentProjectionTypeString = projectionTypeStrings[i];
 						camera.SetProjectionType((SceneCamera::ProjectionType)i);
 					}
+
 					if (isSelected)
 						ImGui::SetItemDefaultFocus();
 				}
@@ -325,7 +330,24 @@ namespace Nu {
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-		});		
+
+			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+					component.Texture = Texture2D::Create(texturePath.string());
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+
+
+			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+		});
+			
 	}
 
 }

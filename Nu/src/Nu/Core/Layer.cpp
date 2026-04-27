@@ -8,9 +8,4 @@ namespace Nu {
 	{
 	}
 
-	Layer::~Layer()
-	{
-
-	}
-
 }

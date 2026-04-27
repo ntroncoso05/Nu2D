@@ -5,7 +5,6 @@
 
 #include <entt.hpp>
 
-
 namespace Nu {
 
 	class Entity;

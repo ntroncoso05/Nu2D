@@ -3,7 +3,7 @@
 #include "Nu/Core/Core.h"
 #include "Layer.h"
 
-//#include <vector>
+#include <vector>
 
 namespace Nu {
 

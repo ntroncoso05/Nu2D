@@ -2,6 +2,7 @@
 
 #include "Nu.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "Nu/Renderer/EditorCamera.h"
 
@@ -25,9 +26,10 @@ namespace Nu {
 
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 	private:
-		OrthographicCameraController m_CameraController;
+		Nu::OrthographicCameraController m_CameraController;
 
 		// Temp
 		Ref<VertexArray> m_SquareVA;
@@ -57,6 +59,7 @@ namespace Nu {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 
 }

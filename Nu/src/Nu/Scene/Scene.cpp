@@ -34,11 +34,11 @@ namespace Nu {
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		// Update Scripts
+		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 			{
-				// TODO: Move to Scene::OnScenePlay()
+				// TODO: Move to Scene::OnScenePlay
 				if (!nsc.Instance)
 				{
 					nsc.Instance = nsc.InstantiateScript();
@@ -70,9 +70,9 @@ namespace Nu {
 
 		if(mainCamera)
 		{
-			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-			auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);//auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
@@ -105,7 +105,7 @@ namespace Nu {
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
-		// Resize our non-FiedAspectRatio cameras
+		// Resize our non-FixedAspectRatio cameras
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
 		{
@@ -123,7 +123,7 @@ namespace Nu {
 		{
 			const auto& camera = view.get<CameraComponent>(entity);
 			if (camera.Primary)
-				return Entity{ entity, this };
+				return Entity{entity, this};
 		}
 		return {};
 	}
@@ -142,7 +142,8 @@ namespace Nu {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
+			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>

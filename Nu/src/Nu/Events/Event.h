@@ -8,7 +8,7 @@ namespace Nu {
 
 	// Events in Nu are currently blocking, meaning when an event occurs it
 	// immediately gets dispatched and must be dealt with right then and there.
-	// in the future, a better strategy might be to buffer events in an event
+	// For the future, a better strategy might be to buffer events in an event
 	// bus and process them during the "event" part of the update stage.
 
 	enum class EventType
@@ -23,14 +23,14 @@ namespace Nu {
 	enum EventCategory
 	{
 		None = 0,
-		EventCategoryApplication	= BIT(0),
-		EventCategoryInput			= BIT(1),
-		EventCategoryKeyboard		= BIT(2),
-		EventCategoryMouse			= BIT(3),
-		EventCategoryMouseButton	= BIT(4)
+		EventCategoryApplication    = BIT(0),
+		EventCategoryInput          = BIT(1),
+		EventCategoryKeyboard       = BIT(2),
+		EventCategoryMouse          = BIT(3),
+		EventCategoryMouseButton    = BIT(4)
 	};
 
-#define EVENT_CLASS_TYPE(type)	static EventType GetStaticType() { return EventType::##type; }\
+#define EVENT_CLASS_TYPE(type)	static EventType GetStaticType() { return EventType::type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
@@ -68,7 +68,7 @@ namespace Nu {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.Handled = func(static_cast<T&>(m_Event));
+				m_Event.Handled |= func(static_cast<T&>(m_Event));
 				return true;
 			}
 			return false;
@@ -85,4 +85,5 @@ namespace Nu {
 	{
 		return e.ToString();
 	}
+	
 }

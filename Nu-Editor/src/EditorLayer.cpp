@@ -1,5 +1,5 @@
 #include "EditorLayer.h"
-#include "ImGui/imgui.h"
+#include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -8,14 +8,16 @@
 
 #include "Nu/Utils/PlatformUtils.h"
 
-#include <ImGuizmo.h>
+#include <ImGuizmo.h> //""
 
 #include "Nu/Math/Math.h"
 
 namespace Nu {
 
+	extern const std::filesystem::path g_AssetPath;
+
 	EditorLayer::EditorLayer()
-		: Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) /*<- Aspect ratio 16:9*/, m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
+		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f) /*<- Aspect ratio 16:9*/, m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
 	}
 
@@ -33,12 +35,20 @@ namespace Nu {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
+
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 		
 #if 0
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Green Square");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -55,17 +65,17 @@ namespace Nu {
 		class CameraController : public ScriptableEntity
 		{
 		public:
-			void OnCreate()
+			virtual void OnCreate() override
 			{
 				auto& translation = GetComponent<TransformComponent>().Translation;
 				translation.x = rand() % 10 - 5.0f;
 			}
 
-			void OnDestroy()
+			virtual void OnDestroy() override
 			{
 			}
 
-			void OnUpdate(Timestep ts)
+			virtual void OnUpdate(Timestep ts) override
 			{
 				auto& translation = GetComponent<TransformComponent>().Translation;
 
@@ -85,6 +95,7 @@ namespace Nu {
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 #endif
+
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
@@ -99,12 +110,11 @@ namespace Nu {
 
 		// Resize
 		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
-			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0 && // zero sized frambuffer is invalid
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-
 			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
@@ -124,10 +134,10 @@ namespace Nu {
 		// Clear our entity ID attachment to -1
 		m_Framebuffer->ClearAttachment(1, -1);
 
-		// Update Scene
+		// Update scene
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
-		auto [mx, my] = ImGui::GetMousePos();
+		auto[mx, my] = ImGui::GetMousePos();
 		mx -= m_ViewportBounds[0].x;
 		my -= m_ViewportBounds[0].y;
 		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
@@ -148,10 +158,10 @@ namespace Nu {
 	{
 		NU_PROFILE_FUNCTION();
 
+		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
-		static bool opt_fullscreen = opt_fullscreen_persistant;
-		static bool opt_padding = false;
+		bool opt_fullscreen = opt_fullscreen_persistant;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -160,21 +170,16 @@ namespace Nu {
 		if (opt_fullscreen)
 		{
 			const ImGuiViewport* viewport = ImGui::GetMainViewport();
-			ImGui::SetNextWindowPos(viewport->WorkPos);
-			ImGui::SetNextWindowSize(viewport->WorkSize);
+			ImGui::SetNextWindowPos(viewport->Pos);//WorkPos
+			ImGui::SetNextWindowSize(viewport->Size);//WorkSize
 			ImGui::SetNextWindowViewport(viewport->ID);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
-		else
-		{
-			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-		}
 
-		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
-		// and handle the pass-thru hole, so we ask Begin() to not render a background.
+		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
 		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
@@ -183,16 +188,14 @@ namespace Nu {
 		// all active windows docked into it will lose their parent and become undocked.
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-		if (!opt_padding)
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-		if (!opt_padding)
-			ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
 
-		// Submit the DockSpace
+		// DockSpace
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
@@ -207,14 +210,11 @@ namespace Nu {
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::BeginMenu("Options"))
+			if (ImGui::BeginMenu("File"))
 			{
 				// Disabling fullscreen would allow the window to be moved to the front of other windows,
 				// which we can't undo at the moment without finer window depth/z control.
-				ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-				ImGui::MenuItem("Padding", NULL, &opt_padding);
-				ImGui::Separator();
-
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
 				if (ImGui::MenuItem("New", "Ctrl+N"))
 					NewScene();
 
@@ -225,7 +225,6 @@ namespace Nu {
 					SaveSceneAs();
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
-
 				ImGui::EndMenu();
 			}
 
@@ -233,6 +232,7 @@ namespace Nu {
 		}
 
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
 
@@ -251,8 +251,7 @@ namespace Nu {
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
-		ImGui::Begin("Viewport");
-		
+		ImGui::Begin("Viewport");		
 		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		auto viewportOffset = ImGui::GetWindowPos();
@@ -269,6 +268,16 @@ namespace Nu {
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				OpenScene(std::filesystem::path(g_AssetPath) / path);
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (selectedEntity && m_GizmoType != -1)
@@ -277,6 +286,8 @@ namespace Nu {
 			ImGuizmo::SetDrawlist();
 
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+
+			// Camera
 
 			// Runtime camera from entity
 			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
@@ -317,6 +328,7 @@ namespace Nu {
 			}
 		}
 
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -341,6 +353,7 @@ namespace Nu {
 
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+
 		switch (e.GetKeyCode())
 		{
 			case Key::N:
@@ -412,25 +425,29 @@ namespace Nu {
 
 	void EditorLayer::OpenScene()
 	{
-		std::optional<std::string> filepath = FileDialogs::SaveFile("Nu Scene (*.nu)\0*.nu\0");
-		if (filepath)
-		{
-			m_ActiveScene = CreateRef<Scene>();
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		std::string filepath = FileDialogs::OpenFile("Nu Scene (*.nu)\0*.nu\0");
+		if (!filepath.empty())
+			OpenScene(filepath);
+	}
 
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(*filepath);
-		}
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.Deserialize(path.string());
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::optional<std::string> filepath = FileDialogs::SaveFile("Nu Scene (*.nu)\0*.nu\0");
-		if (filepath)
+		std::string filepath = FileDialogs::SaveFile("Nu Scene (*.nu)\0*.nu\0");
+		if (!filepath.empty())
 		{
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(*filepath);
+			serializer.Serialize(filepath);
 		}
 	}
+
 }

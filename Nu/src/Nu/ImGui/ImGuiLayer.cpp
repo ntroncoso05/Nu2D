@@ -1,9 +1,9 @@
 #include "nupch.h"
 #include "ImGuiLayer.h"
 
-#include "imgui.h"
-#include "backends/imgui_impl_glfw.h"		// Same as "ImGuiBuild.cpp"
-#include "backends/imgui_impl_opengl3.h"	// Same as "ImGuiBuild.cpp"
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>	// Same as "ImGuiBuild.cpp"
+#include <backends/imgui_impl_opengl3.h>	// Same as "ImGuiBuild.cpp"
 
 #include "Nu/Core/Application.h"
 
@@ -11,16 +11,12 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-#include <ImGuizmo.h>
+#include "ImGuizmo.h"
 
 namespace Nu {
 
 	ImGuiLayer::ImGuiLayer()
-		:Layer("ImGuiLayer")
-	{
-	}
-
-	ImGuiLayer::~ImGuiLayer()
+		: Layer("ImGuiLayer")
 	{
 	}
 
@@ -40,12 +36,13 @@ namespace Nu {
 		//io.ConfigViewportsNoAutoMerge = true;		// <- io.configFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 		//io.ConfigViewportsNoTaskBarIcon = true;	// <- io.configFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcon;
 		
-		io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/static/OpenSans-Bold.ttf", 18.0f);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/static/OpenSans-Regular.ttf", 18.0f);
+		float fontSize = 18.0f;// *2.0f;
+		io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Bold.ttf", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", fontSize);
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
-		//ImGui::StyleColorsClasic();
+		//ImGui::StyleColorsClassic();
 		//ImGui::StyleColorsLight();
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
@@ -109,10 +106,10 @@ namespace Nu {
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
-			GLFWwindow* backup_current_contex = glfwGetCurrentContext();
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_contex);
+			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
 

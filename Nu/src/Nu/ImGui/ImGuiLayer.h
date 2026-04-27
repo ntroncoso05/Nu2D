@@ -12,7 +12,7 @@ namespace Nu {
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		~ImGuiLayer() = default;
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
@@ -26,7 +26,6 @@ namespace Nu {
 		void SetDarkThemeColors();
 	private:
 		bool m_BlockEvents = true;
-		float m_Time = 0.0f;
 	};
 
 }

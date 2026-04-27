@@ -4,6 +4,7 @@
 
 #Binaries
 **/bin/
+!vendor/premake/bin/
 
 !vendor/premake/bin/
 
@@ -21,6 +22,11 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+
+# Directories
+Nu/vendor/VulkanSDK
+Nu-Editor/assets/cache
+scripts/__pycache__
 
 # Files
 *.user

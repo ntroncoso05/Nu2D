@@ -8,8 +8,8 @@ namespace Nu {
 	class NuEditor : public Application
 	{
 	public:
-		NuEditor()
-			:Application("Nu Editor")
+		NuEditor(ApplicationCommandLineArgs args)
+			: Application("Nu Editor", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -19,9 +19,9 @@ namespace Nu {
 		}
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new NuEditor();
+		return new NuEditor(args);
 	}
 
 }

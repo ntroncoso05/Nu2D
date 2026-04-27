@@ -30,8 +30,8 @@ namespace Nu {
 	class MouseScrolledEvent : public Event
 	{
 	public:
-		MouseScrolledEvent(const float x, const float y)
-			: m_XOffset(x), m_YOffset(y) {}
+		MouseScrolledEvent(const float xOffset, const float yOffset)
+			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
 		float GetXOffset() const { return m_XOffset; }
 		float GetYOffset() const { return m_YOffset; }
@@ -54,7 +54,7 @@ namespace Nu {
 	public:
 		MouseCode GetMouseButton() const { return m_Button; }
 
-		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 	protected:
 		MouseButtonEvent(const MouseCode button)
 			: m_Button(button) {}

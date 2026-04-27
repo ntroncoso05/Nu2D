@@ -6,7 +6,7 @@
 namespace Nu {
 
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
-		:m_Width(width), m_Height(height)
+		: m_Width(width), m_Height(height)
 	{
 		NU_PROFILE_FUNCTION();
 
@@ -19,7 +19,7 @@ namespace Nu {
 		// Texture parameters
 		// set a few parameters specifically need to deal with what happens when we render our texture on geometry that isn't like one-to-one mapping, so OpenGL will have to shrink or expand the texture its called minification and magnification. others parameters if need it
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // GL_LINEAR liniarly interpolate the color, when not using bit maps(one reason to use it), also good for image, but not like two colors imaage ex. Chekerboard.png image blurring GL_NEAREST works better.
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // GL_NEAREST be snapping to the nearest pixel, instead of linearly interpolating
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // GL_NEAREST be snapping to the nearest pixel, instead of linearly interpolating
 
 		// Define how the texture gets wrap, in case it exceed that 0 to 1 texture coordinate system
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -27,7 +27,7 @@ namespace Nu {
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
-		:m_Path(path)
+		: m_Path(path)
 	{
 		NU_PROFILE_FUNCTION();
 
@@ -43,7 +43,6 @@ namespace Nu {
 		m_Height = height;
 
 		GLenum internalFormat = 0, dataFormat = 0;
-
 		if (channels == 4)
 		{
 			internalFormat = GL_RGBA8;
@@ -66,7 +65,7 @@ namespace Nu {
 		// Texture parameters
 		// set a few parameters specifically need to deal with what happens when we render our texture on geometry that isn't like one-to-one mapping, so OpenGL will have to shrink or expand the texture its called minification and magnification. others parameters if need it
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // GL_LINEAR liniarly interpolate the color, when not using bit maps(one reason to use it), also good for image, but not like two colors imaage ex. Chekerboard.png image blurring GL_NEAREST works better.
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // GL_NEAREST be snapping to the nearest pixel, instead of linearly interpolating
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // GL_NEAREST be snapping to the nearest pixel, instead of linearly interpolating
 
 		// Define how the texture gets wrap, in case it exceed that 0 to 1 texture coordinate system
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
