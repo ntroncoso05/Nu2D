@@ -2,7 +2,7 @@
 
 #type vertex
 #version 450 core
-			
+
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec4 a_Color;
 layout(location = 2) in vec2 a_TexCoord;
@@ -34,13 +34,13 @@ void main()
 	v_TexIndex = a_TexIndex;
 	v_EntityID = a_EntityID;
 
-	gl_Position = u_ViewProjection * vec4(a_Position, 1.0f);
+	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 }
 
 #type fragment
 #version 450 core
-			
-layout(location = 0) out vec4 color; // output color
+
+layout(location = 0) out vec4 color;
 layout(location = 1) out int color2;
 
 struct VertexOutput
@@ -52,10 +52,10 @@ struct VertexOutput
 
 layout (location = 0) in VertexOutput Input;
 layout (location = 3) in flat float v_TexIndex;
-layout (location = 4) in int v_EntityID;
+layout (location = 4) in flat int v_EntityID;
 
 layout (binding = 0) uniform sampler2D u_Textures[32]; // sampler2D it's basically an int (a texture slot to sample from)
-			
+
 void main()
 {
 	vec4 texColor = Input.Color;
