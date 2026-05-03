@@ -1,5 +1,6 @@
 #include "nupch.h"
 #include "Nu/Utils/PlatformUtils.h"
+#include "Nu/Core/Application.h"
 
 #include <commdlg.h> //win32 opendialog
 #include <GLFW/glfw3.h>
@@ -9,6 +10,11 @@
 #include "Nu/Core/Application.h"
 
 namespace Nu {
+
+	float Time::GetTime()
+	{
+		return glfwGetTime();
+	}
 
 	std::string FileDialogs::OpenFile(const char* filter)
 	{

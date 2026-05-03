@@ -111,6 +111,9 @@
     <ClInclude Include="src\Nu\Core\Timestep.h">
       <Filter>src\Nu\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nu\Core\UUID.h">
+      <Filter>src\Nu\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nu\Core\Window.h">
       <Filter>src\Nu\Core</Filter>
     </ClInclude>
@@ -1506,6 +1509,9 @@
       <Filter>src\Nu\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Nu\Core\Log.cpp">
+      <Filter>src\Nu\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Core\UUID.cpp">
       <Filter>src\Nu\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Nu\Core\Window.cpp">

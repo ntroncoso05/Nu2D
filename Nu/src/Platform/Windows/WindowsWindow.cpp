@@ -94,7 +94,7 @@ namespace Nu {
 			{
 				case GLFW_PRESS:
 				{					
-					KeyPressedEvent event(key, 0); // Nu event					
+					KeyPressedEvent event(key, 0); // Nu event		maybe false?			
 					data.EventCallback(event);	   // Dispatch event
 					break;
 				}
@@ -106,7 +106,7 @@ namespace Nu {
 				}
 				case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(key, 1); // Nu event		
+					KeyPressedEvent event(key, true); // Nu event		
 					data.EventCallback(event);	   // Dispatch event
 					break;
 				}

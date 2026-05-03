@@ -8,20 +8,20 @@ namespace Nu {
 	class NuEditor : public Application
 	{
 	public:
-		NuEditor(ApplicationCommandLineArgs args)
-			: Application("Nu Editor", args)
+		NuEditor(const ApplicationSpecification& spec)
+			: Application(spec)
 		{
 			PushLayer(new EditorLayer());
-		}
-
-		~NuEditor()
-		{
 		}
 	};
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new NuEditor(args);
+		ApplicationSpecification spec;
+		spec.Name = "Nu Editor";
+		spec.CommandLineArgs = args;
+
+		return new NuEditor(spec);
 	}
 
 }

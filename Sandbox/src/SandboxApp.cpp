@@ -7,7 +7,8 @@
 class Sandbox : public Nu::Application
 {
 public:
-	Sandbox(Nu::ApplicationCommandLineArgs args)
+	Sandbox(const Nu::ApplicationSpecification& specification)
+		: Nu::Application(specification)
 	{
 		// PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
@@ -20,5 +21,10 @@ public:
 
 Nu::Application* Nu::CreateApplication(Nu::ApplicationCommandLineArgs args)
 {
-	return new Sandbox(args);
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../Nu-Editor";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }

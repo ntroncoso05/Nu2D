@@ -1,6 +1,6 @@
 Scene: Untitled
 Entities:
-  - Entity: 12837192831273
+  - Entity: 9335076965011521498
     TagComponent:
       Tag: Camera B
     TransformComponent:
@@ -18,7 +18,7 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 12837192831273
+  - Entity: 3480369648141931921
     TagComponent:
       Tag: Camera A
     TransformComponent:
@@ -28,7 +28,7 @@ Entities:
     CameraComponent:
       Camera:
         ProjectionType: 1
-        PerspectiveFOV: 0.013707784
+        PerspectiveFOV: 0.785398185
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
@@ -36,7 +36,7 @@ Entities:
         OrthographicFar: 1
       Primary: false
       FixedAspectRatio: false
-  - Entity: 12837192831273
+  - Entity: 4212786185008784347
     TagComponent:
       Tag: Red Square
     TransformComponent:
@@ -45,7 +45,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 0, 0, 1]
-  - Entity: 12837192831273
+  - Entity: 6902904111259729925
     TagComponent:
       Tag: Green Square
     TransformComponent:
