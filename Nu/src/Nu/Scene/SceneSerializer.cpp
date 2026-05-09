@@ -193,6 +193,16 @@ namespace Nu {
 			out << YAML::EndMap; // CameraComponent
 		}
 
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap; // ScriptComponent
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::EndMap; // ScriptComponent
+		}
+
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
 			out << YAML::Key << "SpriteRendererComponent";
@@ -274,7 +284,7 @@ namespace Nu {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
-		m_Scene->m_Registry.view<entt::entity>().each([&](auto entityID)//m_Scene->m_Registry.each([&](auto entityID)
+		m_Scene->m_Registry.view<entt::entity>().each([&](auto entityID) //m_Scene->m_Registry.each([&](auto entityID)
 		{
 			Entity entity = { entityID, m_Scene.get() };
 			if (!entity)
@@ -304,7 +314,7 @@ namespace Nu {
 		}
 		catch (YAML::ParserException e)
 		{
-			NU_CORE_ERROR("Failed to load .hazel file '{0}'\n     {1}", filepath, e.what());
+			NU_CORE_ERROR("Failed to load .nu file '{0}'\n     {1}", filepath, e.what());
 			return false;
 		}
 
@@ -358,6 +368,13 @@ namespace Nu {
 
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+				}
+
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
 				}
 
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];

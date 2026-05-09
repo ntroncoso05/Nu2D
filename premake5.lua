@@ -33,6 +33,15 @@ group "Dependencies"
 	include "Nu/vendor/yaml-cpp"
 group ""
 
-include "Nu"
-include "Sandbox"
-include "Nu-Editor"
+group "Core"
+	include "Nu"
+	include "Nu-ScriptCore"
+group ""
+
+group "Tools"
+	include "Nu-Editor"
+group ""
+
+group "Misc"
+	include "Sandbox"
+group ""

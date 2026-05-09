@@ -28,6 +28,9 @@
     <Filter Include="src\Nu\Scene">
       <UniqueIdentifier>{DC5A524A-C8BD-E1EE-7143-1AA55D85AD71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Nu\Scripting">
+      <UniqueIdentifier>{412A906D-2D23-AFBF-5655-944442AD8ECB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Nu\Utils">
       <UniqueIdentifier>{1FEF7F4A-0B52-0FEF-B4D7-47A5A019DB71}</UniqueIdentifier>
     </Filter>
@@ -200,6 +203,12 @@
     </ClInclude>
     <ClInclude Include="src\Nu\Scene\ScriptableEntity.h">
       <Filter>src\Nu\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\Scripting\ScriptEngine.h">
+      <Filter>src\Nu\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\Scripting\ScriptGlue.h">
+      <Filter>src\Nu\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Nu\Utils\PlatformUtils.h">
       <Filter>src\Nu\Utils</Filter>
@@ -1579,6 +1588,12 @@
     </ClCompile>
     <ClCompile Include="src\Nu\Scene\SceneSerializer.cpp">
       <Filter>src\Nu\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Scripting\ScriptEngine.cpp">
+      <Filter>src\Nu\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Scripting\ScriptGlue.cpp">
+      <Filter>src\Nu\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>

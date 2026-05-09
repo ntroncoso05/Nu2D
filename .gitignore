@@ -1,17 +1,11 @@
 ################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
-#Binaries
+# Binaries
 **/bin/
-!vendor/premake/bin/
-
-!vendor/premake/bin/
-
-# Directories
-/.vs/Nu/
-bin/
 bin-int/
+Intermediates/
+!vendor/premake/bin/
 
 # Nu files
 *.log
@@ -22,13 +16,15 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+**.csproj
 
 # Directories
 Nu/vendor/VulkanSDK
 Nu-Editor/assets/cache
 scripts/__pycache__
 
-# Files
+
+# Profiling Files
 *.user
 /Sandbox/NuProfile-Runtime.json
 /Sandbox/NuProfile-Shutdown.json
@@ -36,3 +32,8 @@ scripts/__pycache__
 /Nu-Editor/NuProfile-Runtime.json
 /Nu-Editor/NuProfile-Shutdown.json
 /Nu-Editor/NuProfile-Startup.json
+
+
+# ?
+/.vs/Nu/
+bin/

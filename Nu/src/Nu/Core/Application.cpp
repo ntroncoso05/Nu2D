@@ -4,6 +4,7 @@
 #include "Nu/Core/Log.h"
 
 #include "Nu/Renderer/Renderer.h"
+#include "Nu/Scripting/ScriptEngine.h"
 
 #include "Input.h"
 #include "Nu/Utils/PlatformUtils.h"
@@ -19,6 +20,7 @@ namespace Nu {
 
 		NU_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
+
 		// Set working directory here
 		if (!m_Specification.WorkingDirectory.empty())
 			std::filesystem::current_path(m_Specification.WorkingDirectory);
@@ -27,6 +29,7 @@ namespace Nu {
 		m_Window->SetEventCallback(NU_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -36,6 +39,7 @@ namespace Nu {
 	{
 		NU_PROFILE_FUNCTION();
 
+		ScriptEngine::Shutdown();
 		// TODO: Check
 		Renderer::Shutdown();
 	}
