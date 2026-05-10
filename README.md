@@ -1,2 +1,2 @@
-# Nu
-Nu Engine
+# Nu2D
+Nu2D Engine
