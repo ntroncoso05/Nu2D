@@ -3,8 +3,8 @@ project "Nu-ScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/Nu-Editor/Resources/Scripts")
-	objdir ("%{wks.location}/Nu-Editor/Resources/Scripts/Intermediates")
+	targetdir ("../Nu-Editor/Resources/Scripts")
+	objdir ("../Nu-Editor/Resources/Scripts/Intermediates")
 
 	files 
 	{
