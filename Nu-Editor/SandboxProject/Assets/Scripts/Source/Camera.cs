@@ -44,6 +44,7 @@ namespace Sandbox
 			Vector3 translation = Translation;
 			translation += velocity * ts;
 			Translation = translation;
+			DistanceFromPlayer += ts;
 		}
 
 	}
