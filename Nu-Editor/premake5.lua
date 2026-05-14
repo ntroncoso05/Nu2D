@@ -18,8 +18,9 @@ project "Nu-Editor"
 		"%{wks.location}/Nu/vendor/spdlog/include",
 		"%{wks.location}/Nu/src",
 		"%{wks.location}/Nu/vendor",
-		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}"
 	}
 
