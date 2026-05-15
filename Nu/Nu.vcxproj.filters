@@ -81,10 +81,16 @@
     <ClInclude Include="src\Nu\Core\Assert.h">
       <Filter>src\Nu\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nu\Core\Buffer.h">
+      <Filter>src\Nu\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nu\Core\Core.h">
       <Filter>src\Nu\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Nu\Core\EntryPoint.h">
+      <Filter>src\Nu\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\Core\FileSystem.h">
       <Filter>src\Nu\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Nu\Core\Input.h">
@@ -1509,6 +1515,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nu\Core\Application.cpp">
+      <Filter>src\Nu\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Core\FileSystem.cpp">
       <Filter>src\Nu\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Nu\Core\Layer.cpp">

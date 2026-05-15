@@ -9,6 +9,4 @@ namespace Nu {
 		static void RegisterFunctions();
 	};
 
-
-
 }
