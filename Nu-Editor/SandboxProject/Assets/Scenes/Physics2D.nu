@@ -77,7 +77,7 @@ Entities:
       Rotation: [0, 0, 0.785398185]
       Scale: [0.361159921, 0.375571877, 0.848135829]
     SpriteRendererComponent:
-      Color: [0.120451406, 0.77228421, 0.779922783, 1]
+      Color: [0.120451406, 0.77228421, 0.779922783, 1]      
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Dynamic

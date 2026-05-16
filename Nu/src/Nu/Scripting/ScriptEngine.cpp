@@ -498,7 +498,6 @@ namespace Nu {
 		}
 	}
 
-
 	bool ScriptInstance::GetFieldValueInternal(const std::string& name, void* buffer)
 	{
 		const auto& fields = m_ScriptClass->GetFields();

@@ -45,7 +45,7 @@ Entities:
       Scale: [2.5, 2.5, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: assets\textures\Checkerboard.png
+      TexturePath: Textures\Checkerboard.png
       TilingFactor: 2.5
   - Entity: 6645248621277955267
     TagComponent:
@@ -56,5 +56,5 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: assets\textures\bloater.png
+      TexturePath: Textures\bloater.png
       TilingFactor: 1

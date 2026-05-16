@@ -180,6 +180,8 @@
     <ClInclude Include="src\Nu\Events\MouseEvent.h" />
     <ClInclude Include="src\Nu\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Nu\Math\Math.h" />
+    <ClInclude Include="src\Nu\Project\Project.h" />
+    <ClInclude Include="src\Nu\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Nu\Renderer\Buffer.h" />
     <ClInclude Include="src\Nu\Renderer\Camera.h" />
     <ClInclude Include="src\Nu\Renderer\EditorCamera.h" />
@@ -647,6 +649,8 @@
     <ClCompile Include="src\Nu\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Nu\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Nu\Math\Math.cpp" />
+    <ClCompile Include="src\Nu\Project\Project.cpp" />
+    <ClCompile Include="src\Nu\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Nu\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Nu\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Nu\Renderer\Framebuffer.cpp" />

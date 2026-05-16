@@ -22,6 +22,9 @@
     <Filter Include="src\Nu\Math">
       <UniqueIdentifier>{B816A295-24CC-1A8B-ADC0-14621975118F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Nu\Project">
+      <UniqueIdentifier>{C5FD1565-B1CB-096B-9A5F-7A9186CCE5CF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Nu\Renderer">
       <UniqueIdentifier>{05CDE2F4-7158-50B9-7A69-D3ADE673ACB9}</UniqueIdentifier>
     </Filter>
@@ -146,6 +149,12 @@
     </ClInclude>
     <ClInclude Include="src\Nu\Math\Math.h">
       <Filter>src\Nu\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\Project\Project.h">
+      <Filter>src\Nu\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\Project\ProjectSerializer.h">
+      <Filter>src\Nu\Project</Filter>
     </ClInclude>
     <ClInclude Include="src\Nu\Renderer\Buffer.h">
       <Filter>src\Nu\Renderer</Filter>
@@ -1543,6 +1552,12 @@
     </ClCompile>
     <ClCompile Include="src\Nu\Math\Math.cpp">
       <Filter>src\Nu\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Project\Project.cpp">
+      <Filter>src\Nu\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nu\Project\ProjectSerializer.cpp">
+      <Filter>src\Nu\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Nu\Renderer\Buffer.cpp">
       <Filter>src\Nu\Renderer</Filter>

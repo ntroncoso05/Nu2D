@@ -23,6 +23,8 @@
 #include "Nu/Scene/ScriptableEntity.h"
 #include "Nu/Scene/Components.h"
 
+#include "Nu/Project/Project.h"
+
 // ---Renderer-------------------------
 #include "Nu/Renderer/Renderer.h"
 #include "Nu/Renderer/Renderer2D.h"
