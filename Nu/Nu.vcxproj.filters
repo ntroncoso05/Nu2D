@@ -34,6 +34,9 @@
     <Filter Include="src\Nu\Scripting">
       <UniqueIdentifier>{412A906D-2D23-AFBF-5655-944442AD8ECB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Nu\UI">
+      <UniqueIdentifier>{4C8180B3-B8EB-342A-012A-E6CF6DD3127F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Nu\Utils">
       <UniqueIdentifier>{1FEF7F4A-0B52-0FEF-B4D7-47A5A019DB71}</UniqueIdentifier>
     </Filter>
@@ -224,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="src\Nu\Scripting\ScriptGlue.h">
       <Filter>src\Nu\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nu\UI\UI.h">
+      <Filter>src\Nu\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Nu\Utils\PlatformUtils.h">
       <Filter>src\Nu\Utils</Filter>
@@ -1521,6 +1527,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nu\Physics\Physics2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nu\Core\Application.cpp">

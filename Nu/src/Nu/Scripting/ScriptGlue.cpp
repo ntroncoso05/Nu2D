@@ -9,6 +9,8 @@
 #include "Nu/Scene/Scene.h"
 #include "Nu/Scene/Entity.h"
 
+#include "Nu/Physics/Physics2D.h"
+
 #include "mono/metadata/object.h"
 #include "mono/metadata/reflection.h"
 
@@ -115,6 +117,43 @@ namespace Nu {
 		b2Body* body = (b2Body*)rb2d.RuntimeBody;
 		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
 	}
+
+	static void Rigidbody2DComponent_GetLinearVelocity(UUID entityID, glm::vec2* outLinearVelocity)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		NU_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		NU_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		const b2Vec2& linearVelocity = body->GetLinearVelocity();
+		*outLinearVelocity = glm::vec2(linearVelocity.x, linearVelocity.y);
+	}
+
+	static Rigidbody2DComponent::BodyType Rigidbody2DComponent_GetType(UUID entityID)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		NU_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		NU_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		return Utils::Rigidbody2DTypeFromBox2DBody(body->GetType());
+	}
+
+	static void Rigidbody2DComponent_SetType(UUID entityID, Rigidbody2DComponent::BodyType bodyType)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		NU_CORE_ASSERT(scene);
+		Entity entity = scene->GetEntityByUUID(entityID);
+		NU_CORE_ASSERT(entity);
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		body->SetType(Utils::Rigidbody2DTypeToBox2DBody(bodyType));
+	}
 	
 	static bool Input_IsKeyDown(KeyCode keycode)
 	{
@@ -169,6 +208,9 @@ namespace Nu {
 		
 		NU_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
 		NU_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
+		NU_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetLinearVelocity);
+		NU_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetType);
+		NU_ADD_INTERNAL_CALL(Rigidbody2DComponent_SetType);
 
 		NU_ADD_INTERNAL_CALL(Input_IsKeyDown);
 	}

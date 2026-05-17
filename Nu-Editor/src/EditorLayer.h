@@ -27,6 +27,7 @@ namespace Nu {
 		void OnOverlayRender();
 
 		void NewProject();
+		bool OpenProject();
 		void OpenProject(const std::filesystem::path& path);
 		void SaveProject();
 

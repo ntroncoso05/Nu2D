@@ -180,6 +180,7 @@
     <ClInclude Include="src\Nu\Events\MouseEvent.h" />
     <ClInclude Include="src\Nu\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Nu\Math\Math.h" />
+    <ClInclude Include="src\Nu\Physics\Physics2D.h" />
     <ClInclude Include="src\Nu\Project\Project.h" />
     <ClInclude Include="src\Nu\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Nu\Renderer\Buffer.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\Nu\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Nu\Scripting\ScriptEngine.h" />
     <ClInclude Include="src\Nu\Scripting\ScriptGlue.h" />
+    <ClInclude Include="src\Nu\UI\UI.h" />
     <ClInclude Include="src\Nu\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />

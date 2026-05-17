@@ -17,6 +17,8 @@
 #include "Nu/Core/Buffer.h"
 #include "Nu/Core/FileSystem.h"
 
+#include "Nu/Project/Project.h"
+
 namespace Nu {
 
 	static std::unordered_map<std::string, ScriptFieldType> s_ScriptFieldTypeMap =
@@ -132,8 +134,11 @@ namespace Nu {
 
 		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
 		bool AssemblyReloadPending = false;
-
+#ifdef NU_DEBUG
 		bool EnableDebugging = true;
+#else
+		bool EnableDebugging = false;
+#endif
 
 		// Runtime
 
@@ -169,7 +174,9 @@ namespace Nu {
 			NU_CORE_ERROR("[ScriptEngine] Could not load Hazel-ScriptCore assembly.");
 			return;
 		}
-		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+
+		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		status = LoadAppAssembly(scriptModulePath);
 		if (!status)
 		{
 			NU_CORE_ERROR("[ScriptEngine] Could not load app assembly.");
