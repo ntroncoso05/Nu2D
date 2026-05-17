@@ -6,6 +6,7 @@
 
 #include "Nu/Renderer/Camera.h"
 #include "Nu/Renderer/EditorCamera.h"
+#include "Nu/Renderer/Font.h"
 
 #include "Nu/Scene/Components.h"
 
@@ -47,6 +48,8 @@ namespace Nu {
 		static void DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID = -1);		
 		
 		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID);
+
+		static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color);
 
 		static float GetLineWidth();
 		static void SetLineWidth(float width);

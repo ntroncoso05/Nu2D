@@ -183,6 +183,9 @@
     <ClInclude Include="src\Nu\Renderer\GraphicsContext.h">
       <Filter>src\Nu\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nu\Renderer\MSDFData.h">
+      <Filter>src\Nu\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nu\Renderer\OrthographicCamera.h">
       <Filter>src\Nu\Renderer</Filter>
     </ClInclude>

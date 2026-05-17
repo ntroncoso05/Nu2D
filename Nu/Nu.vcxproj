@@ -189,6 +189,7 @@
     <ClInclude Include="src\Nu\Renderer\Font.h" />
     <ClInclude Include="src\Nu\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Nu\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Nu\Renderer\MSDFData.h" />
     <ClInclude Include="src\Nu\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Nu\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Nu\Renderer\RenderCommand.h" />
